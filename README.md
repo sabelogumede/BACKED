@@ -1,10 +1,17 @@
-# BACKED
+# BACKED API
 
-Eshop node API - connects to our angular frontend
+Eshop node API - connects to our Angular E-shop https://github.com/sabelogumede/gummedia
 
 # dotenv environment variables file
 
 - add url Variable Name
-- mongoose connection string
+- Mongoose connection string
 
-#
+# Run in Development
+
+- npm install
+- npm start
+
+# node -version
+
+- v12.19.0
