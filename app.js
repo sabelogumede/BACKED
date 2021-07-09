@@ -10,7 +10,7 @@ require("dotenv/config");
 app.use(cors());
 app.options("*", cors());
 
-//Routes -apis
+//Routes -apis import
 const productsRouters = require("./routes/products");
 const categoriesRouters = require("./routes/categories");
 const usersRouters = require("./routes/users");
