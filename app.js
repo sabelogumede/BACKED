@@ -2,31 +2,35 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-
-// Middleware -lib
-app.use(express.json());
-app.use(morgan("tiny"));
+const cors = require("cors");
 // env config
 require("dotenv/config");
+
+// Middleware - allow cross origin connection with apps
+app.use(cors());
+app.options("*", cors());
+
+//Routes -apis
+const productsRouters = require("./routes/products");
+const categoriesRouters = require("./routes/categories");
+const usersRouters = require("./routes/users");
+const ordersRouters = require("./routes/orders");
+
+// Middleware -boddyparse has been deprecated replaced by express.json
+app.use(express.json());
+app.use(morgan("tiny"));
+//
+
+// api key
 const api = process.env.API_URL;
 
-// get route
-app.get(`${api}/products`, (req, res) => {
-  const product = {
-    id: 1,
-    name: "hair dresser",
-    image: "some_url",
-  };
-  res.send(product);
-});
-// post route
-app.post(`${api}/products`, (req, res) => {
-  const newProduct = req.body;
-  console.log(newProduct);
-  res.send(newProduct);
-});
+// Routers - GET/POST routes middleware
+app.use(`${api}/products`, productsRouters);
+app.use(`${api}/categories`, categoriesRouters);
+app.use(`${api}/users`, usersRouters);
+app.use(`${api}/orders`, ordersRouters);
 
-// connect to mongoose cloud
+//Database - connect to mongoose cloud
 mongoose
   .connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
@@ -40,7 +44,7 @@ mongoose
     console.log(err);
   });
 
-// application listening port
+//Server - application listening port
 app.listen(3000, () => {
   console.log("server running http://localhost:3000");
 });
