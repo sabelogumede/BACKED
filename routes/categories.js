@@ -11,8 +11,22 @@ router.get(`/`, async (req, res) => {
   if (!categorieList) {
     res.status(500).json({ success: false });
   }
-  res.send(categorieList);
+  res.status(200).send(categorieList);
 });
+
+// GET - Buy Id
+router.get(`/:categoryId`, async (req, res) => {
+  const category = await Category.findById(req.params.categoryId);
+
+  if (!category) {
+    res.status(500).json({
+      message: "the category with the given ID was not found!",
+      success: false,
+    });
+  }
+  res.status(200).send(category);
+});
+
 // Post
 router.post(`/`, async (req, res) => {
   let category = new Category({
@@ -26,9 +40,10 @@ router.post(`/`, async (req, res) => {
 
   res.send(category);
 });
+
 // Delete
-router.delete(`/:categoryid`, (req, res) => {
-  Category.findByIdAndRemove(req.params.categoryid)
+router.delete(`/:categoryId`, (req, res) => {
+  Category.findByIdAndRemove(req.params.categoryId)
     .then((category) => {
       if (category) {
         return res.status(200).json({
